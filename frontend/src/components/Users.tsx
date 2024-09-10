@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { User } from '../../frontend/src/models/types';
+import { User } from '../models/types';
 
 
 function Users() {

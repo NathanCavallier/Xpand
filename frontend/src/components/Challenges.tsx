@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { challenges } from '../../frontend/src/models/types';
+import { challenges } from '../models/types';
 
 function Challenges() {
     const [challenges, setChallenges] = useState<challenges[]>([]);
