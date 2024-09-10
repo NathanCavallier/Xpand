@@ -65,6 +65,29 @@ app.get('/tables', (req, res) => {
     });
 });
 
+// Get all users when accessing /users route
+app.get('/users', (req, res) => {
+    db.all(`SELECT * FROM users`, [], (err, users) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.json({ users });
+        }
+    });
+});
+
+// Get all challenges
+app.get('/challenges', (req, res) => {
+    db.all(`SELECT * FROM challenges`, [], (err, challenges) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.json({ challenges });
+        }
+    });
+});
+
+
 // Close database connection on server shutdown
 process.on('SIGINT', () => {
     closeDatabase();

@@ -20,8 +20,10 @@ const createTables = () => {
   // Créer la table Challenges
   db.run(`CREATE TABLE IF NOT EXISTS challenges (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT,
+    name TEXT,
     description TEXT,
+    image TEXT,
+    reward TEXT
     points INTEGER
   )`, (err) => {
     if (err) {
