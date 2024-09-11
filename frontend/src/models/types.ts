@@ -1,117 +1,77 @@
-import e from "express";
 
 // Model User
 export interface User {
     id: number;
     name: string;
     email: string;
-    profilePic: string;
+    avatar_url: string;
+    bio: string;
+    created_at: string;
+    updated_at: string;
 };
 
+// Model challenges
+export interface challenges {
+    id: number;
+    title: string;
+    description: string;
+    image_url: string;
+    points: number;
+    difficulty_level: string;
+    category: string;
+    created_at: string;
+    updated_at: string;
+};
+
+// Model UserLogin
 export interface UserLogin {
     email: string;
     password: string;
 };
 
+// Model UserRegister
 export interface UserRegister {
     name: string;
     email: string;
     password: string;
 };
 
-// Model challenges
-export interface challenges {
+// Model games
+export interface games {
     id: number;
     name: string;
-    description: string;
     image: string;
-    reward: string;
-    points: number;
-};
-
-// Model Challenge
-export interface Challenge {
-    id: number;
-    challenger: User;
-    challenged: User;
-    status: 'pending' | 'accepted' | 'rejected';
-    scoreChallenger: number;
-    scoreChallenged: number;
-};
-
-// Model Game
-interface Game {
-    id: number;
-    name: string;
     description: string;
-    image: string;
+    category: string;
+    max_players: number;
+    min_players: number;
+    created_at: string;
+    updated_at: string;
 };
 
-// Model GameResult
-interface GameResult {
+// Model user_progress
+export interface user_progress {
     id: number;
-    user: User;
-    game: Game;
+    user_id: number;
+    challenge_id: number;
+    game_id: number;
+    progress_percentage: number;
+    completed: boolean;
+    created_at: string;
+    updated_at: string;
+};
+
+// Model statistics
+export interface statistics {
+    id: number;
+    user_id: number;
+    game_id: number;
+    challenge_id: number;
+    total_time_spent: number;
     score: number;
+    attempts: number;
+    total_challenges_completed: number;
+    total_games_played: number;
+    created_at: string;
 };
 
-// Model Stats
-export interface Stats {
-    user: User;
-    gamesPlayed: number;
-    gamesWon: number;
-    gamesLost: number;
-    gamesDraw: number;
-    totalScore: number;
-};
-
-// Model Leaderboard
-export interface Leaderboard {
-    user: User;
-    score: number;
-};
-
-// Model UserStats
-export interface UserStats {
-    user: User;
-    stats: Stats;
-};
-
-// Model UserLeaderboard
-export interface UserLeaderboard {
-    user: User;
-    leaderboard: Leaderboard;
-};
-
-// Model UserChallenges
-export interface UserChallenges {
-    user: User;
-    challenges: Challenge[];
-};
-
-// Model UserGameResults
-export interface UserGameResults {
-    user: User;
-    gameResults: GameResult[];
-};
-
-// Model UserStatsLeaderboard
-export interface UserStatsLeaderboard {
-    user: User;
-    stats: Stats;
-    leaderboard: Leaderboard;
-};
-
-// Model UserStatsChallenges
-export interface UserStatsChallenges {
-    user: User;
-    stats: Stats;
-    challenges: Challenge[];
-};
-
-// Model UserStatsGameResults
-export interface UserStatsGameResults {
-    user: User;
-    stats: Stats;
-    gameResults: GameResult[];
-};
