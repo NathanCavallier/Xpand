@@ -102,6 +102,7 @@ const createTables = () => {
 
   // Créer la table friends (Contient les informations des amis des utilisateurs.)
   db.run(`CREATE TABLE IF NOT EXISTS friends (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         friend_id INTEGER NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -115,6 +116,26 @@ const createTables = () => {
       console.log('friends table created or already exists.');
     }
   });
+
+  // Créer la table friend_requests (Contient les demandes d'amis en attente des utilisateurs.)
+  db.run(`CREATE TABLE IF NOT EXISTS friend_requests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        sender_id INTEGER NOT NULL,
+        receiver_id INTEGER NOT NULL,
+        status TEXT, -- pending, accepted, declined, etc.
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (sender_id) REFERENCES users(id),
+        PRIMARY KEY (user_id, sender_id)
+    )`, (err) => {
+    if (err) {
+      console.error('Error creating friend_requests table:', err.message);
+    } else {
+      console.log('friend_requests table created or already exists.');
+    }
+  });
+
 
   // Créer la table messages (Contient les messages envoyés entre utilisateurs.)
   db.run(`CREATE TABLE IF NOT EXISTS messages (
@@ -189,10 +210,12 @@ const createTables = () => {
   db.run(`CREATE TABLE IF NOT EXISTS courses (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL, -- Titre du cours (ex: "Apprendre à coder en Python")
+      image_url TEXT,
       description TEXT,
       category TEXT, -- Ex: programming, design, etc.
       difficulty_level TEXT, -- Ex: beginner, intermediate, advanced
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`, (err) => {
     if (err) {
       console.error('Error creating courses table:', err.message);
@@ -207,7 +230,10 @@ const createTables = () => {
       course_id INTEGER NOT NULL,
       title TEXT NOT NULL, -- Titre de la leçon (ex: "Introduction à la programmation")
       content TEXT,
+      video_url TEXT, -- URL de la vidéo de la leçon
+      image_url TEXT, -- URL de l'image de la leçon
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (course_id) REFERENCES courses(id)
     )`, (err) => {
     if (err) {
@@ -262,6 +288,8 @@ const createTables = () => {
   db.run(`CREATE TABLE IF NOT EXISTS events (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
+      image_url TEXT,
+      location TEXT,
       description TEXT, -- Description de l'événement
       start_date DATE,
       end_date DATE,
@@ -294,6 +322,7 @@ const createTables = () => {
 
   // Créer la table event_participants (Contient les participants aux événements.)
   db.run(`CREATE TABLE IF NOT EXISTS event_participants (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER NOT NULL,
       event_id INTEGER NOT NULL,
       participation_status TEXT, -- pending, accepted, declined, etc.
@@ -345,6 +374,7 @@ const createTables = () => {
   db.run(`CREATE TABLE IF NOT EXISTS notifications (
       id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Identifiant unique de la notification
       user_id INTEGER NOT NULL,              -- L'utilisateur concerné par la notification
+      image_url TEXT,                        -- URL de l'image associée à la notification (peut être null)
       type TEXT NOT NULL,                    -- Le type de notification (par exemple : "nouveau défi", "message", "badge", etc.)
       content TEXT NOT NULL,                 -- Le contenu de la notification (message court ou résumé)
       is_read BOOLEAN DEFAULT 0,             -- Si la notification a été lue (0 = non, 1 = oui)
@@ -364,6 +394,7 @@ const createTables = () => {
       user_id INTEGER NOT NULL,              -- L'utilisateur concerné par ces paramètres
       notifications_enabled BOOLEAN DEFAULT 1, -- Indique si les notifications sont activées (1 = oui, 0 = non)
       email_notifications BOOLEAN DEFAULT 1,   -- Indique si les notifications par e-mail sont activées
+      push_notifications BOOLEAN DEFAULT 1,    -- Indique si les notifications par push sont activées
       dark_mode BOOLEAN DEFAULT 0,            -- Si l'utilisateur préfère le mode sombre (1 = activé, 0 = désactivé)
       language TEXT DEFAULT 'en',             -- Langue préférée de l'utilisateur (par défaut : anglais)
       privacy_level TEXT DEFAULT 'public',    -- Niveau de confidentialité (public, privé, amis uniquement, etc.)
