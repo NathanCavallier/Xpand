@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('./app');
-const { createTables, listTables } = require('./dbTables');
+const { createTables } = require('./dbTables');
 const { db, closeDatabase } = require('./dbConfig');
 
 
