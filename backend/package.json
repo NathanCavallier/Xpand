@@ -27,10 +27,14 @@
     "nodemailer": "^6.9.15",
     "nodemon": "^3.1.4",
     "passport": "^0.7.0",
+    "passport-azure-ad": "^4.3.5",
     "passport-jwt": "^4.0.1",
     "react-i18next": "^15.0.1",
     "react-toastify": "^10.0.5",
     "sqlite3": "^5.1.7",
     "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6"
   }
 }
